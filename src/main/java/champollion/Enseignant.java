@@ -1,10 +1,13 @@
 package champollion;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Un enseignant est caractérisé par les informations suivantes : son nom, son adresse email, et son service prévu,
  * et son emploi du temps.
  */
 public class Enseignant extends Personne {
+    private final Map<UE, ServicePrevu> servicePrevus = new HashMap<>();
 
     // TODO : rajouter les autres méthodes présentes dans le diagramme UML
 
@@ -22,7 +25,13 @@ public class Enseignant extends Personne {
      */
     public int heuresPrevues() {
         // TODO: Implémenter cette méthode
-        throw new UnsupportedOperationException("Pas encore implémenté");
+        //throw new UnsupportedOperationException("Pas encore implémenté");
+
+        int total = 0;
+        for (ServicePrevu service : servicePrevus.values()) {
+            total += service.volumeCM * 1.5 + service.volumeTD + service.volumeTP * 0.75;
+        }
+        return Math.round(total);
     }
 
     /**
@@ -36,7 +45,13 @@ public class Enseignant extends Personne {
      */
     public int heuresPrevuesPourUE(UE ue) {
         // TODO: Implémenter cette méthode
-        throw new UnsupportedOperationException("Pas encore implémenté");
+        //throw new UnsupportedOperationException("Pas encore implémenté");
+
+        ServicePrevu service = servicePrevus.get(ue);
+        if (service == null) {
+            return 0;
+        }
+        return (int) Math.round(service.volumeCM * 1.5 + service.volumeTD + service.volumeTP * 0.75);
     }
 
     /**
@@ -49,7 +64,14 @@ public class Enseignant extends Personne {
      */
     public void ajouteEnseignement(UE ue, int volumeCM, int volumeTD, int volumeTP) {
         // TODO: Implémenter cette méthode
-        throw new UnsupportedOperationException("Pas encore implémenté");
+        //throw new UnsupportedOperationException("Pas encore implémenté");
+
+        ServicePrevu service = servicePrevus.getOrDefault(ue, new ServicePrevu(0, 0, 0));
+        service.volumeCM += volumeCM;
+        service.volumeTD += volumeTD;
+        service.volumeTP += volumeTP;
+
+        servicePrevus.put(ue, service);
     }
 
 }
